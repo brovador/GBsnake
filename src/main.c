@@ -115,26 +115,7 @@ unsigned char gameover = 1;
 unsigned char i, j, k, l, m;
 unsigned char vFrameCount;
 unsigned char playing;
-
-
-void resetGame()
-{
-    vFrameCount = 0;
-    snakeSize = 1;
-    SnakeHead[0] = 11;
-    SnakeHead[1] = 9;
-    x = 1;
-    y = 0;
-    level = 0xFF;
-    pillsLive = 0;
-    score = 0;
-    scoreParts[0] = 0;
-    scoreParts[1] = 0;
-    scoreParts[2] = 0;
-    scoreParts[3] = 0;
-    gameover = 1;
-    score = 0;
-}
+unsigned char numSprites;
 
 
 void drawUI()
@@ -165,13 +146,36 @@ void drawSnake()
 void drawPills()
 {
   for (i = 0; i < pillsPerLevel[level]; ++i) {
-      if (pillsPositions[i][0] != 0xFF && pillsPositions[i][1] != 0xFF) {
+      if (pillsPositions[i][0] != 0xFF && pillsPositions[i][1] != 0xFF && !gameover) {
           set_sprite_tile(i, PILL_SPRITE);
           move_sprite(i, PILL_SPRITE_X_COORD(pillsPositions[i][0]), PILL_SPRITE_Y_COORD(pillsPositions[i][1]));
       } else {
           set_sprite_tile(i, EMPTY_SPRITE);
       }
   }
+}
+
+
+void resetGame()
+{
+    gameover = 1;
+    drawSnake();
+    drawPills();
+
+    vFrameCount = 0;
+    snakeSize = 1;
+    SnakeHead[0] = 11;
+    SnakeHead[1] = 9;
+    x = 1;
+    y = 0;
+    level = 0xFF;
+    pillsLive = 0;
+    score = 0;
+    scoreParts[0] = 0;
+    scoreParts[1] = 0;
+    scoreParts[2] = 0;
+    scoreParts[3] = 0;
+    score = 0;
 }
 
 
@@ -218,8 +222,8 @@ void game()
       ++level;
       level = level > MAX_LEVEL ? MAX_LEVEL : level;
       for (i = 0; i < pillsPerLevel[level]; ++i) {
-          j = _rand() % (levelBoundaries[2] - levelBoundaries[0]);
-          k = _rand() % (levelBoundaries[3] - levelBoundaries[1]);
+          j = (_rand() & 7) % (levelBoundaries[2] - levelBoundaries[0]);
+          k = (_rand() & 7) % (levelBoundaries[3] - levelBoundaries[1]);
           pillsPositions[i][0] = levelBoundaries[0] + j;
           pillsPositions[i][1] = levelBoundaries[1] + k;
           ++pillsLive;
