@@ -7,4 +7,4 @@ Simple port of the Snake game written in C for the Nintendo GameBoy.
 
 # Build
 
-Makefile included: ```make all```.
+Makefile included: ```make build```.
