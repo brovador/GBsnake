@@ -61,6 +61,8 @@ unsigned char score = 0;
 unsigned char scoreParts[4];
 
 unsigned char level = 0;
+unsigned char levelParts[2];
+
 unsigned char pad;
 unsigned char gameover = 1;
 unsigned char i, j, k, l, m;
@@ -86,12 +88,9 @@ void drawUI()
   }
 
   //Draw level
-  k = (level == 0xFF) ? 0 : level + 1; 
-  i = k / 10;
-  j = k - i * 10;
-  SET_NEXT_SPRITE(i == 0 ? 0x23 : 0x19 + i );
+  SET_NEXT_SPRITE(levelParts[0] == 0 ? 0x23 : 0x19 + levelParts[0] );
   move_sprite(spriteIdx - 1, SPRITE_X_COORD(4), SPRITE_Y_COORD(1));
-  SET_NEXT_SPRITE(j == 0 ? 0x23 : 0x19 + j );
+  SET_NEXT_SPRITE(levelParts[1] == 0 ? 0x23 : 0x19 + levelParts[1] );
   move_sprite(spriteIdx - 1, SPRITE_X_COORD(5), SPRITE_Y_COORD(1));
 
   if (gameover) {
@@ -110,19 +109,30 @@ void drawUI()
 
 void drawSnake()
 {
-  l = gameover ? EMPTY_SPRITE : SNAKE_SPRITE;
-  i = gameover ? 1 : 0;
-  for (i; i < snakeSize; ++i) {
+  if (gameover) {
+    l = EMPTY_SPRITE;
+    //Clean all snake graphics on gameover
+    for (i = 1; i < snakeSize; i++) {
       j = snakeCoords[i][0];
       k = snakeCoords[i][1];
-      set_bkg_tiles(j, k, 1, 1, &l);  
-  }
+      set_bkg_tiles(j, k, 1, 1, &l);
+    }
+    j = snakeCleanCoords[0];
+    k = snakeCleanCoords[1];
+    set_bkg_tiles(j, k, 1, 1, &l);
+  } else {
+    //Draw only head, because is the one moving
+    l = SNAKE_SPRITE;
+    j = snakeCoords[0][0];
+    k = snakeCoords[0][1];
+    set_bkg_tiles(j, k, 1, 1, &l);
 
-  //Clean empty zones
-  l = EMPTY_SPRITE;
-  j = snakeCleanCoords[0];
-  k = snakeCleanCoords[1];
-  set_bkg_tiles(j, k, 1, 1, &l);
+    //Clean empty zones
+    l = EMPTY_SPRITE;
+    j = snakeCleanCoords[0];
+    k = snakeCleanCoords[1];
+    set_bkg_tiles(j, k, 1, 1, &l);
+  }
 }
 
 
@@ -152,13 +162,14 @@ void resetGame()
     x = 1;
     y = 0;
     level = 0xFF;
+    levelParts[0] = 0x00;
+    levelParts[1] = 0x00;
     pillsLive = 0;
     score = 0;
     scoreParts[0] = 0;
     scoreParts[1] = 0;
     scoreParts[2] = 0;
     scoreParts[3] = 0;
-    score = 0;
 }
 
 
@@ -202,6 +213,8 @@ void game()
   if (pillsLive == 0) {
       ++level;
       level = level > MAX_LEVEL ? MAX_LEVEL : level;
+      levelParts[0] = (level + 1) / 10;
+      levelParts[1] = (level + 1) - levelParts[0] * 10;
       for (i = 0; i < pillsPerLevel[level]; ++i) {
           j = (_rand() & 7) % (levelBoundaries[2] - levelBoundaries[0]);
           k = (_rand() & 7) % (levelBoundaries[3] - levelBoundaries[1]);
