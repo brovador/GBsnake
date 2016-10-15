@@ -1,9 +1,9 @@
 #include <gb/gb.h>
 #include <gb/drawing.h>
-#include <gb/rand.h>
+#include <rand.h>
 
-#include "snake-tiles.c"
-#include "snake-map.c"
+#include "snake-tiles.h"
+#include "snake-map.h"
 
 #define mapWidth 20
 #define mapHeight 18
@@ -216,8 +216,8 @@ void game()
       levelParts[0] = (level + 1) / 10;
       levelParts[1] = (level + 1) - levelParts[0] * 10;
       for (i = 0; i < pillsPerLevel[level]; ++i) {
-          j = (_rand() & 7) % (levelBoundaries[2] - levelBoundaries[0]);
-          k = (_rand() & 7) % (levelBoundaries[3] - levelBoundaries[1]);
+          j = (rand() & 7) % (levelBoundaries[2] - levelBoundaries[0]);
+          k = (rand() & 7) % (levelBoundaries[3] - levelBoundaries[1]);
           pillsPositions[i][0] = levelBoundaries[0] + j;
           pillsPositions[i][1] = levelBoundaries[1] + k;
           ++pillsLive;
