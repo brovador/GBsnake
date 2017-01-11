@@ -4,7 +4,7 @@ Simple port of the Snake game written in C for the Nintendo GameBoy.
 
 ![Example](http://brovador.github.io/GBsnake/Demo.gif)
 
-Compiled rom is insid ```dist``` directory.
+Compiled rom is under ```dist``` directory.
 
 # Build
 
