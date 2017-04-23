@@ -8,11 +8,6 @@ Compiled rom is under ```dist``` directory.
 
 # Build (MacOSX)
 * Download [gbdk v2.96a](http://www.rpgmaker.it/proflame/gbdk.zip) for MacOSX and the [bgb emulator](http://bgb.bircd.org/) for windows.
-* Install ```wine``` using brew: 
-
-```
-brew install wine
-```
 
 * Place both inside the same directory with the folder names ```gbdk``` and ```bgb```:
 
@@ -20,6 +15,12 @@ brew install wine
 ROOT_DIRECTORY
    /gbdk
    /bgb
+```
+
+* Install ```wine``` using brew: 
+
+```
+brew install wine
 ```
 
 * In the ```Makefile``` configure ```$(TOOLS_DIR)``` so it points to ```ROOT_DIRECTORY``` (which contains gbdk and bgb)
