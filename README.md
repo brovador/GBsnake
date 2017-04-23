@@ -17,12 +17,12 @@ ROOT_DIRECTORY
    /bgb
 ```
 
+* In the ```Makefile``` configure ```$(TOOLS_DIR)``` so it points to ```ROOT_DIRECTORY``` (which contains gbdk and bgb)
 * Install ```wine``` using brew: 
 
 ```
 brew install wine
 ```
 
-* In the ```Makefile``` configure ```$(TOOLS_DIR)``` so it points to ```ROOT_DIRECTORY``` (which contains gbdk and bgb)
 * Call ```make clean && make run```
 
